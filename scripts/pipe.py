@@ -3,7 +3,7 @@ from random import randint
 
 class Pipe:
     def __init__(self):
-        self.x = 350
+        self.x = 700
         self.y = 0
         self.img = pygame.image.load("assets/imgs/pipe.png").convert()
         self.rect = self.img.get_rect()
@@ -15,4 +15,3 @@ class Pipe:
 
     def update(self):
         ...
-        
