@@ -1,24 +1,47 @@
 import pygame
 import sys
-from player import Player
+from scripts.player import Player
+from scripts.pipe import Pipe
 
-pygame.init()
-pygame.display.set_caption("FlappyBird") # titulo
+class Game:
+    def __init__(self):
+        pygame.init()
+        pygame.display.set_caption("FlappyBird") # nome da tela
 
-# configurações gerais
-SCREEN_W, SCREEN_H = 244, 512
-screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
-FPS = 60
-clock = pygame.time.Clock()
+        # configurações gerais
+        self.SCREEN_W, self.SCREEN_H = 400, 650
+        self.screen = pygame.display.set_mode((self.SCREEN_W, self.SCREEN_H))
+        self.FPS = 60
+        self.clock = pygame.time.Clock()
+        self.player = Player()
 
-# loop principal do jogo
-while True:
-    screen.fill("black")
-    clock.tick(FPS)
+        self.background = pygame.image.load("assets/imgs/background.png").convert()
+        # escalonando o background para se ajustar as dimensões da tela
+        self.background = pygame.transform.scale(self.background, (self.SCREEN_W, self.SCREEN_H))
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+        self.test_pipe = Pipe()
 
-    pygame.display.update()
+    def run(self):
+        # loop principal do jogo
+        while True:
+            self.draw_background()
+
+            self.event_handling()
+
+            self.player.render(self.screen)
+            self.test_pipe.render(self.screen)
+
+            pygame.display.update()
+            self.clock.tick(self.FPS)
+
+    def draw_background(self):
+        self.screen.blit(self.background, (0, 0))
+
+    def event_handling(self):
+        # tratamento de eventos
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+Game().run()
