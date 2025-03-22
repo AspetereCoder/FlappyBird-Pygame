@@ -8,6 +8,7 @@ class Player:
         self.sprite_index = 0
         self.image = self.sprites[self.sprite_index]
         self.score = 0
+        self.velocity = 1
 
     def render(self, surface):
         surface.blit(self.image, (self.x, self.y))
@@ -22,3 +23,6 @@ class Player:
         if self.sprite_index >= 3:
             self.sprite_index = 0
         
+        # sistema de gravidade
+        self.y += self.velocity
+        self.velocity += 0.2
