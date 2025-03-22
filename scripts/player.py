@@ -7,6 +7,7 @@ class Player:
         self.sprites = [pygame.image.load("assets/imgs/player-down.png"), pygame.image.load("assets/imgs/player-idle.png"), pygame.image.load("assets/imgs/player-up.png")]
         self.sprite_index = 0
         self.image = self.sprites[self.sprite_index]
+        self.score = 0
 
     def render(self, surface):
         surface.blit(self.image, (self.x, self.y))

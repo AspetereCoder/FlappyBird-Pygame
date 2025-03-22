@@ -14,6 +14,7 @@ class Game:
         self.FPS = 60
         self.clock = pygame.time.Clock()
         self.player = Player()
+        self.font = pygame.font.Font("assets/fonts/Vaticanus-G3yVG.ttf", 52)
 
         # carregando imagens
         self.background = pygame.image.load("assets/imgs/background.png").convert()
@@ -49,6 +50,10 @@ class Game:
         # efeito de scroll
         if (self.ground_position < -self.SCREEN_W):
             self.ground_position = 0
+
+        # desenhando score do player 
+        text_to_render = self.font.render(str(self.player.score), True, "white")
+        self.screen.blit(text_to_render, ((self.SCREEN_W / 2) - 10, 100))
 
         self.ground_position -= 3 # velocidade do scroll do ground
 
