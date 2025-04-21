@@ -1,8 +1,8 @@
 # FlappyBird-Pygame
-Recriação do jogo FlappyBird feito em Python utilizando a biblioteca [pygame]([Exemplo de Repositório](https://github.com/usuario/exemplo-repo))
+Recriação do jogo FlappyBird feito em Python utilizando a biblioteca [pygame](https://github.com/usuario/exemplo-repo))
 
 ## Requisitos:
-- Python 3.10 ou acima
+- python 3.10 ou acima
 - gerenciador de pacotes pip
 - pygame
  
