@@ -2,6 +2,7 @@ import pygame
 import sys
 from scripts.player import Player
 from scripts.pipe import Pipe
+from random import randint
 
 class Game:
     def __init__(self):
@@ -24,17 +25,26 @@ class Game:
         self.ground = pygame.transform.scale(self.ground, (self.SCREEN_W, 100))
         self.ground_position = 0
 
-        self.test_pipe = Pipe()
+        # todos os pipes ficarão armazenados aqui
+        self.pipes = []
+        self.pipe_gap = 100 # distância do vão entre um pipe e outro
+        self.pipe_dist = 125 # distância entre um pipe_group e outro
 
     def run(self):
+        # gerando os pipes iniciais
+        self.generate_pipes()
+
+
         # loop principal do jogo
         while True:
             self.draw_background()
+            self.draw_pipes()
+
+            self.handle_pipes()
 
             self.event_handling()
 
             self.player.render(self.screen)
-            self.test_pipe.render(self.screen)
 
             pygame.display.update()
             self.clock.tick(self.FPS)
@@ -67,4 +77,44 @@ class Game:
                 if event.key == pygame.K_SPACE:
                     self.player.velocity = -5
                     
+    def generate_pipes(self, amount=5):
+        # essa função só é chamada uma vez
+        # ela gera os pipes iniciais, que por padrão são 6
+        
+        for i in range(amount):
+
+            upper_pipe_x = self.SCREEN_W + (self.pipe_dist * i)
+            upper_pipe_y = 0
+            upper_pipe_height = randint(100, 300)
+
+            lower_pipe_x = upper_pipe_x
+            lower_pipe_y = upper_pipe_y + upper_pipe_height + self.pipe_gap
+            lower_pipe_height = 550 - lower_pipe_y
+
+            upper_pipe = Pipe(upper_pipe_x, upper_pipe_y, upper_pipe_height, flipped=True)
+            lower_pipe = Pipe(lower_pipe_x, lower_pipe_y, lower_pipe_height)
+
+            self.pipes.append([upper_pipe, lower_pipe])
+
+
+    def draw_pipes(self):
+        for pipe_group in self.pipes:
+            upper_pipe = pipe_group[0]
+            lower_pipe = pipe_group[1]
+
+            upper_pipe.render(self.screen)
+            lower_pipe.render(self.screen)
+    
+    def handle_pipes(self):
+        for pipe_group in self.pipes:
+            upper_pipe = pipe_group[0]
+            lower_pipe = pipe_group[1]
+
+            if (upper_pipe.x + upper_pipe.img.get_width() <= 0):
+                # apagando os pipes 
+                self.pipes.pop(0)
+                # gerando outro
+                self.generate_pipes(1)
+        
+
 Game().run()
