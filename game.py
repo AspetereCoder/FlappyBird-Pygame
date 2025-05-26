@@ -115,6 +115,18 @@ class Game:
                 self.pipes.pop(0)
                 # gerando outro
                 self.generate_pipes(1)
-        
+    
+            # essa rect serve para registrar o score do player
+            collision_rect = pygame.rect.Rect(upper_pipe.x + (upper_pipe.img.get_width() / 2), upper_pipe.y + upper_pipe.height, 1, self.pipe_gap)
+            pygame.draw.rect(self.screen, "GREEN", collision_rect)
+            # caso a rect do player e a rect acima colidam, significa que o player
+            # passou no meio do cano, portanto é registrado um ponto a+ em seu score
+            if (self.player.rect.colliderect(collision_rect) and (self.player.rect.x + self.player.img.get_width() / 2) == collision_rect.x):
+                # efeito sonoro de pontuação
+                score_sfx = pygame.mixer.Sound("assets/sfx/score_sfx.mp3")
+                score_sfx.play()
+
+                self.player.score += 1
+                del collision_rect
 
 Game().run()

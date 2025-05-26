@@ -6,16 +6,17 @@ class Player:
         self.y = 325
         self.sprites = [pygame.image.load("assets/imgs/player-down.png"), pygame.image.load("assets/imgs/player-idle.png"), pygame.image.load("assets/imgs/player-up.png")]
         self.sprite_index = 0
-        self.image = self.sprites[self.sprite_index]
+        self.img = self.sprites[self.sprite_index]
         self.score = 0
         self.velocity = 1
+        self.rect = pygame.rect.Rect(self.x, self.y, self.img.get_width(), self.img.get_height())
 
     def render(self, surface):
-        surface.blit(self.image, (self.x, self.y))
+        surface.blit(self.img, (self.x, self.y))
 
         self.update()
     def update(self):
-        self.image = self.sprites[int(self.sprite_index)]
+        self.img = self.sprites[int(self.sprite_index)]
 
         # lógica da animação do sprite
         self.sprite_index += 0.2
@@ -26,3 +27,5 @@ class Player:
         # sistema de gravidade
         self.y += self.velocity
         self.velocity += 0.2
+
+        self.rect = pygame.rect.Rect(self.x, self.y, self.img.get_width(), self.img.get_height())
