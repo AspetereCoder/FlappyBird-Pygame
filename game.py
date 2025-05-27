@@ -39,6 +39,7 @@ class Game:
         while True:
             self.draw_background()
             self.draw_pipes()
+            self.draw_score()
 
             self.handle_pipes()
 
@@ -61,11 +62,12 @@ class Game:
         if (self.ground_position < -self.SCREEN_W):
             self.ground_position = 0
 
+        self.ground_position -= 3 # velocidade do scroll do ground
+
+    def draw_score(self):
         # desenhando score do player 
         text_to_render = self.font.render(str(self.player.score), True, "white")
         self.screen.blit(text_to_render, ((self.SCREEN_W / 2) - 10, 100))
-
-        self.ground_position -= 3 # velocidade do scroll do ground
 
     def event_handling(self):
         # tratamento de eventos
