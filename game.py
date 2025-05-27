@@ -76,6 +76,8 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     self.player.velocity = -5
+                    wing_flap_sfx = pygame.mixer.Sound("assets/sfx/wingflap_sfx.mp3")
+                    wing_flap_sfx.play()
                     
     def generate_pipes(self, amount=5):
         # essa função só é chamada uma vez
