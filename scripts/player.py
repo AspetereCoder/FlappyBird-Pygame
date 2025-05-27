@@ -10,6 +10,7 @@ class Player:
         self.score = 0
         self.velocity = 1
         self.rect = pygame.rect.Rect(self.x, self.y, self.img.get_width(), self.img.get_height())
+        self.is_alive = True
 
     def render(self, surface):
         surface.blit(self.img, (self.x, self.y))

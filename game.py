@@ -24,6 +24,7 @@ class Game:
         self.background = pygame.transform.scale(self.background, (self.SCREEN_W, self.SCREEN_H))
         self.ground = pygame.transform.scale(self.ground, (self.SCREEN_W, 100))
         self.ground_position = 0
+        self.ground_rect = pygame.rect.Rect(0, self.SCREEN_H - 100, self.ground.get_width(), self.ground.get_height())
 
         # todos os pipes ficarão armazenados aqui
         self.pipes = []
@@ -45,6 +46,8 @@ class Game:
 
             self.event_handling()
 
+            self.check_player_collision()
+
             self.player.render(self.screen)
 
             pygame.display.update()
@@ -62,7 +65,8 @@ class Game:
         if (self.ground_position < -self.SCREEN_W):
             self.ground_position = 0
 
-        self.ground_position -= 3 # velocidade do scroll do ground
+        if self.player.is_alive: # o chão só se mexe se o player estiver vivo
+            self.ground_position -= 3 # velocidade do scroll do ground
 
     def draw_score(self):
         # desenhando score do player 
@@ -76,7 +80,7 @@ class Game:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE and self.player.is_alive:
                     self.player.velocity = -5
                     wing_flap_sfx = pygame.mixer.Sound("assets/sfx/wingflap_sfx.mp3")
                     wing_flap_sfx.play()
@@ -114,6 +118,11 @@ class Game:
             upper_pipe = pipe_group[0]
             lower_pipe = pipe_group[1]
 
+            # caso o player esteja morto, os pipes não devem se mover
+            if not self.player.is_alive:
+                upper_pipe.speed = 0
+                lower_pipe.speed = 0    
+
             if (upper_pipe.x + upper_pipe.img.get_width() <= 0):
                 # apagando os pipes 
                 self.pipes.pop(0)
@@ -133,4 +142,20 @@ class Game:
                 self.player.score += 1
                 del collision_rect
 
+    def check_player_collision(self):
+        # colisão com os pipes
+        rect_lists = []
+        for rect_team in self.pipes:
+            rect_lists.append(rect_team[0].rect)
+            rect_lists.append(rect_team[1].rect)
+
+        if self.player.rect.collidelistall(rect_lists) and self.player.is_alive:
+            # o sfx só toca uma vez e o estado do player fica como morto
+            self.player.is_alive = False
+            collision_sfx = pygame.mixer.Sound("assets/sfx/collision_sfx.mp3").play()
+        # colisão com o chão
+        elif self.player.rect.colliderect(self.ground_rect) and self.player.is_alive:
+            self.player.is_alive = False
+            collision_sfx = pygame.mixer.Sound("assets/sfx/collision_sfx.mp3").play()
+    
 Game().run()

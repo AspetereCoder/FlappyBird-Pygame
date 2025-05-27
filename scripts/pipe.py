@@ -13,6 +13,7 @@ class Pipe:
         self.height = height
         self.img = pygame.transform.scale(self.img, (self.img.get_width(), self.height))
         self.rect = pygame.rect.Rect(self.x, self.y, self.img.get_width(), self.img.get_height())
+        self.speed = 1
 
     def render(self, surface):
         surface.blit(self.img, (self.x, self.y))
@@ -20,7 +21,7 @@ class Pipe:
         self.update()
 
     def update(self):
-        self.x -= 1
+        self.x -= self.speed
         
         # atualizando a rect
         self.rect = pygame.rect.Rect(self.x, self.y, self.img.get_width(), self.img.get_height())
