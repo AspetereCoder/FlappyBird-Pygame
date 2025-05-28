@@ -8,6 +8,7 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("FlappyBird") # nome da tela
+        pygame.display.set_icon(pygame.image.load("assets/imgs/game_icon.png")) # icone da tela
 
         # configurações gerais
         self.SCREEN_W, self.SCREEN_H = 600, 650
